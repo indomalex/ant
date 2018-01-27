@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="javaFileRunner" default="compileWithoutLib" basedir=".">
+	
+	<property name="srcPath" value="F:\new\Java面向对象\第13章(高级Swing)\codes" />
+	<property name="destPath" value="D:\tempJavaRunningBin" />
+	<property name="classPath" value="D:\mavenRepository" />
+	<property name="ifNeedLib" value="false" />
+	<property name="entranceClass" value="JTreeTest2"/>
+	
+	<condition property="needLib">
+		<istrue value="${ifNeedLib}" />
+	</condition>
+	
+	<path id="classPath.base">
+		<fileset dir="${classPath}">
+			<include name="**/*.jar"/>
+		</fileset>	
+	</path>
+	
+	<target name="mkTempDestDir">
+		<mkdir dir="${destPath}"/>
+	</target>
+	
+	<target name="clean" depends="mkTempDestDir">
+      <delete>
+         <fileset dir="${destPath}" includes="**/*" />
+      </delete>
+   </target>
+	
+	<target name="compile" depends="clean" if="needLib">
+		<javac encoding="gbk"
+			srcdir="${srcPath}"
+			destdir="${destPath}"
+			classpathref="clasPath.base"/>
+		<echo message="compile with lib" />
+		<java fork="true" classpath="${destPath}" classname="${entranceClass}" />
+		<echo>program running finished.</echo>
+	</target>
+	
+	<target name="compileWithoutLib" depends="compile" unless="needLib">
+		<javac encoding="gbk"
+			srcdir="${srcPath}"
+			destdir="${destPath}"/>
+		<echo message="compile without lib" />
+		<java fork="true" classpath="${destPath}" classname="${entranceClass}" />
+		<echo>program running finished.</echo>
+	</target>
+
+
+</project>
