@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="javaFileRunner" default="compileWithoutLib" basedir=".">
+<project name="javaFileRunner" default="runIt" basedir=".">
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+	  <classpath>
+		<pathelement location="D:\Program Files\apache-ant-1.10.1\lib\ant-contrib.jar"/>
+	  </classpath>
+	</taskdef>
 	
 	<property name="srcPath" value="F:\new\Java面向对象\第13章(高级Swing)\codes" />
 	<property name="destPath" value="D:\tempJavaRunningBin" />
 	<property name="classPath" value="D:\mavenRepository" />
 	<property name="ifNeedLib" value="false" />
+	<property name="encodingName" value="gbk" />
 	<property name="entranceClass" value="JTreeTest2"/>
 	
 	<condition property="needLib">
@@ -28,23 +35,23 @@
    </target>
 	
 	<target name="compile" depends="clean" if="needLib">
-		<javac encoding="gbk"
+		<javac encoding="${encodingName}"
 			srcdir="${srcPath}"
 			destdir="${destPath}"
 			classpathref="clasPath.base"/>
 		<echo message="compile with lib" />
-		<java fork="true" classpath="${destPath}" classname="${entranceClass}" />
-		<echo>program running finished.</echo>
 	</target>
 	
 	<target name="compileWithoutLib" depends="compile" unless="needLib">
-		<javac encoding="gbk"
+		<javac encoding="${encodingName}"
 			srcdir="${srcPath}"
 			destdir="${destPath}"/>
 		<echo message="compile without lib" />
+	</target>
+	
+	<target name="runIt" depends="compile,compileWithoutLib" >
 		<java fork="true" classpath="${destPath}" classname="${entranceClass}" />
 		<echo>program running finished.</echo>
 	</target>
-
 
 </project>
